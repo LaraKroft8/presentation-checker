@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)file:///Users/kseniadenisova/Downloads/mckinsey-checker_2.html -->
+<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>McKinsey Presentation Checker · Ksenia Denisova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./McKinsey Presentation Checker · Ksenia Denisova_files/css2" rel="stylesheet">
+<style>
+  /* ─── RESET & BASE ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream:   #fdf9f5;
+    --blush:   #f5ede6;
+    --rose:    #c4897a;
+    --rose-dk: #9e6356;
+    --rose-lt: #eedbd5;
+    --text:    #2a1f1a;
+    --muted:   #7a6258;
+    --border:  #e8d8d0;
+    --white:   #ffffff;
+    --success: #5a8a6a;
+    --warn:    #b07040;
+    --danger:  #a04040;
+    --serif:   'Cormorant Garamond', Georgia, serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+    --radius:  14px;
+    --shadow:  0 2px 24px rgba(160,100,80,0.08);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ─── NAV ──────────────────────────────────────── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 18px; font-weight: 600;
+    color: var(--text); text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    letter-spacing: 0.04em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--rose); }
+  .nav-btn {
+    font-size: 13px; font-weight: 500;
+    background: var(--rose); color: var(--white);
+    padding: 8px 20px; border-radius: 24px;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .nav-btn:hover { background: var(--rose-dk); }
+
+  /* ─── HERO ─────────────────────────────────────── */
+  .hero {
+    max-width: 800px; margin: 0 auto;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rose); background: var(--rose-lt);
+    padding: 5px 16px; border-radius: 20px; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 52px); font-weight: 600;
+    line-height: 1.2; color: var(--text);
+    margin-bottom: 20px;
+  }
+  .hero h1 em { font-style: italic; color: var(--rose); }
+  .hero-sub {
+    font-size: 17px; color: var(--muted);
+    max-width: 520px; margin: 0 auto 48px;
+    line-height: 1.75;
+  }
+
+  /* ─── UPLOAD CARD ──────────────────────────────── */
+  .upload-card {
+    background: var(--white);
+    border: 1.5px dashed var(--border);
+    border-radius: 20px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 600px; margin: 0 auto 16px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .upload-card.dragover {
+    border-color: var(--rose);
+    background: var(--blush);
+  }
+  .upload-card.has-file {
+    border-style: solid;
+    border-color: var(--rose);
+    background: #fdf5f2;
+  }
+  .upload-icon {
+    width: 52px; height: 52px;
+    background: var(--blush); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
+  .upload-icon svg { width: 24px; height: 24px; stroke: var(--rose); fill: none; stroke-width: 1.5; }
+  .upload-card h3 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+  .upload-card p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  #fileInput { display: none; }
+  .btn-upload {
+    display: inline-block;
+    font-family: var(--sans); font-size: 14px; font-weight: 500;
+    background: var(--rose); color: var(--white);
+    padding: 12px 32px; border-radius: 28px; border: none;
+    cursor: pointer; transition: background 0.2s; text-decoration: none;
+  }
+  .btn-upload:hover { background: var(--rose-dk); }
+  .upload-formats { font-size: 11px; color: #b0a09a; margin-top: 16px; }
+  .file-chosen {
+    display: none;
+    align-items: center; gap: 12px;
+    background: var(--blush); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 20px;
+    text-align: left;
+  }
+  .file-chosen.visible { display: flex; }
+  .file-chosen-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; }
+  .file-chosen-size { font-size: 12px; color: var(--muted); }
+  .btn-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 18px; line-height: 1; padding: 0;
+  }
+  .btn-analyze {
+    display: block; width: 100%; max-width: 600px; margin: 0 auto 12px;
+    font-family: var(--sans); font-size: 16px; font-weight: 500;
+    background: var(--rose); color: var(--white);
+    padding: 16px 32px; border-radius: 28px; border: none;
+    cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-analyze:hover:not(:disabled) { background: var(--rose-dk); transform: translateY(-1px); }
+  .btn-analyze:disabled { background: #d4b8b2; cursor: not-allowed; transform: none; }
+  .privacy-note { text-align: center; font-size: 12px; color: #b0a09a; }
+
+  /* ─── API KEY BAR ──────────────────────────────── */
+  .apikey-bar {
+    max-width: 600px; margin: 0 auto 32px;
+    background: #fff8f5; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px;
+  }
+  .apikey-bar label { color: var(--muted); white-space: nowrap; }
+  .apikey-bar input {
+    flex: 1; border: 1px solid var(--border); border-radius: 8px;
+    padding: 7px 12px; font-size: 13px; font-family: var(--sans);
+    background: var(--white); color: var(--text);
+    outline: none; transition: border-color 0.2s;
+  }
+  .apikey-bar input:focus { border-color: var(--rose); }
+  .apikey-hint { font-size: 11px; color: #b0a09a; margin-top: 4px; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 20px; }
+
+  /* ─── LANG TOGGLE ──────────────────────────────── */
+  .lang-toggle {
+    max-width: 600px; margin: 0 auto 32px;
+    display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  }
+  .lang-toggle span { font-size: 12px; color: var(--muted); }
+  .toggle-btn {
+    font-size: 12px; padding: 5px 14px; border-radius: 16px;
+    border: 1px solid var(--border); background: var(--white);
+    color: var(--muted); cursor: pointer; transition: all 0.15s;
+    font-family: var(--sans);
+  }
+  .toggle-btn.active {
+    background: var(--rose); color: var(--white); border-color: var(--rose);
+  }
+
+  /* ─── LOADING ──────────────────────────────────── */
+  #loadingSection {
+    display: none; max-width: 600px; margin: 0 auto 48px;
+    text-align: center; padding: 48px 24px;
+  }
+  .spinner {
+    width: 48px; height: 48px; margin: 0 auto 24px;
+    border: 2px solid var(--rose-lt);
+    border-top-color: var(--rose);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 15px; color: var(--muted); }
+  .loading-steps { margin-top: 16px; font-size: 13px; color: #b0a09a; }
+
+  /* ─── REPORT ───────────────────────────────────── */
+  #reportSection {
+    display: none; max-width: 800px; margin: 0 auto 60px;
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  .report-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    margin-bottom: 32px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .report-title { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--text); }
+  .report-filename { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .report-actions { display: flex; gap: 10px; flex-shrink: 0; }
+  .btn-action {
+    font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--white); color: var(--muted);
+    cursor: pointer; transition: all 0.15s; font-family: var(--sans);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-action:hover { border-color: var(--rose); color: var(--rose); }
+  .btn-action.primary { background: var(--rose); color: var(--white); border-color: var(--rose); }
+  .btn-action.primary:hover { background: var(--rose-dk); }
+
+  /* Score overview */
+  .score-overview {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 32px; margin-bottom: 24px;
+    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
+  }
+  .total-score-circle {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: conic-gradient(var(--rose) 0%, var(--rose) var(--pct), var(--rose-lt) var(--pct));
+    display: flex; align-items: center; justify-content: center;
+    position: relative; flex-shrink: 0;
+  }
+  .total-score-circle::after {
+    content: ''; position: absolute;
+    width: 76px; height: 76px; border-radius: 50%;
+    background: var(--white);
+  }
+  .total-score-num {
+    position: relative; z-index: 1;
+    font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--rose);
+    text-align: center; line-height: 1;
+  }
+  .total-score-num span { display: block; font-size: 11px; font-family: var(--sans); color: var(--muted); font-weight: 400; }
+  .score-bars { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: grid; grid-template-columns: 180px 1fr 36px; align-items: center; gap: 12px; }
+  .bar-label { font-size: 13px; color: var(--muted); }
+  .bar-track { height: 6px; background: var(--rose-lt); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--rose); border-radius: 3px; transition: width 1s ease; }
+  .bar-fill.warn { background: var(--warn); }
+  .bar-fill.danger { background: var(--danger); }
+  .bar-val { font-size: 12px; font-weight: 500; color: var(--muted); text-align: right; }
+
+  /* Report sections */
+  .report-sections { display: flex; flex-direction: column; gap: 20px; }
+  .report-block {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  .report-block-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: background 0.15s;
+  }
+  .report-block-header:hover { background: var(--blush); }
+  .report-block-header.open { border-bottom-color: var(--border); }
+  .block-title-row { display: flex; align-items: center; gap: 12px; }
+  .block-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--blush); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .block-icon svg { width: 16px; height: 16px; stroke: var(--rose); fill: none; stroke-width: 1.5; }
+  .block-title { font-size: 15px; font-weight: 500; }
+  .block-score-badge {
+    font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 10px;
+  }
+  .badge-good { background: #eaf4ee; color: #3a7a4a; }
+  .badge-ok   { background: #fdf0e0; color: #8a5a20; }
+  .badge-bad  { background: #fdeaea; color: #8a3030; }
+  .chevron { transition: transform 0.2s; color: var(--muted); font-size: 14px; }
+  .chevron.open { transform: rotate(180deg); }
+  .report-block-body { display: none; padding: 20px 24px; }
+  .report-block-body.open { display: block; }
+  .report-block-body p { font-size: 14px; color: var(--text); line-height: 1.75; margin-bottom: 12px; }
+  .report-block-body p:last-child { margin-bottom: 0; }
+
+  /* Criteria list */
+  .criteria-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .criteria-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; line-height: 1.6; padding: 8px 12px; border-radius: 8px;
+    background: var(--cream);
+  }
+  .criteria-icon { flex-shrink: 0; margin-top: 2px; font-size: 15px; }
+  .ci-pass  { color: var(--success); }
+  .ci-warn  { color: var(--warn); }
+  .ci-fail  { color: var(--danger); }
+  .ci-label { flex: 1; }
+  .ci-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ─── HOW IT WORKS ─────────────────────────────── */
+  .how-section {
+    max-width: 800px; margin: 0 auto 60px; padding: 0 24px;
+  }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 20px;
+  }
+  .steps-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .step-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 16px; text-align: center;
+  }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--blush); color: var(--rose);
+    font-size: 14px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .step-card h4 { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .step-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ─── CHECKS PREVIEW ───────────────────────────── */
+  .checks-section {
+    max-width: 800px; margin: 0 auto 60px; padding: 0 24px;
+  }
+  .checks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .check-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 16px;
+  }
+  .check-card h4 { font-size: 14px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+  .check-card p  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .check-tag {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 6px; margin-bottom: 8px;
+    background: var(--rose-lt); color: var(--rose);
+  }
+
+  /* ─── BANNER ───────────────────────────────────── */
+  .banner {
+    max-width: 800px; margin: 0 auto 60px; padding: 0 24px;
+  }
+  .banner-inner {
+    background: var(--white);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 36px 40px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    flex-wrap: wrap;
+  }
+  .banner-inner h3 { font-family: var(--serif); font-size: 24px; font-weight: 600; margin-bottom: 6px; }
+  .banner-inner p  { font-size: 14px; color: var(--muted); }
+
+  /* ─── FOOTER ───────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border); padding: 24px 48px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    font-size: 12px; color: #b0a09a; background: var(--white);
+  }
+
+  /* ─── ERROR ────────────────────────────────────── */
+  .error-msg {
+    display: none; max-width: 600px; margin: 0 auto 24px;
+    background: #fdeaea; border: 1px solid #f0c0c0; border-radius: 10px;
+    padding: 14px 18px; font-size: 14px; color: #8a3030;
+  }
+  .error-msg.visible { display: block; }
+
+  /* ─── RESPONSIVE ───────────────────────────────── */
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 48px 20px 40px; }
+    .upload-card { padding: 32px 20px; }
+    .score-overview { grid-template-columns: 1fr; text-align: center; }
+    .bar-row { grid-template-columns: 130px 1fr 32px; }
+    .steps-row { grid-template-columns: repeat(2, 1fr); }
+    .checks-grid { grid-template-columns: repeat(2, 1fr); }
+    .banner-inner { flex-direction: column; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://kseniadenisova.com/" class="nav-logo">Ksenia Denisova</a>
+  <div class="nav-links">
+    <a href="https://kseniadenisova.com/kurs/">Курсы</a>
+    <a href="https://kseniadenisova.com/" class="nav-btn">← На сайт</a>
+  </div>
+</nav>
+
+<!-- HERO + UPLOAD -->
+<section class="hero">
+  <span class="eyebrow">Бесплатный инструмент</span>
+  <h1>Проверьте презентацию<br>по стандартам <em>McKinsey</em></h1>
+  <p class="hero-sub">Загрузите PPTX или PDF — и получите детальный разбор по 40+ параметрам: структура, логика, дизайн, данные.</p>
+</section>
+
+<!-- API KEY + LANG -->
+<div class="apikey-bar">
+  <label for="apiKey">API ключ:</label>
+  <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
+</div>
+<p class="apikey-hint">🔐 Ключ используется только в вашем браузере и никуда не отправляется. Получить ключ: <a href="https://console.anthropic.com/" target="_blank" style="color:var(--rose)">console.anthropic.com</a></p>
+
+<div class="lang-toggle">
+  <span>Язык отчёта:</span>
+  <button class="toggle-btn active" onclick="setLang(&#39;ru&#39;, this)">Русский</button>
+  <button class="toggle-btn" onclick="setLang(&#39;en&#39;, this)">English</button>
+</div>
+
+<!-- UPLOAD ZONE -->
+<div class="upload-card" id="uploadZone">
+  <div class="upload-icon">
+    <svg viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 4v12M8 8l4-4 4 4"></path></svg>
+  </div>
+  <h3>Загрузите вашу презентацию</h3>
+  <p>Перетащите файл сюда или выберите вручную</p>
+  <div class="file-chosen" id="fileChosen">
+    <span>📄</span>
+    <span class="file-chosen-name" id="fileName">—</span>
+    <span class="file-chosen-size" id="fileSize"></span>
+    <button class="btn-remove" onclick="removeFile(event)">✕</button>
+  </div>
+  <button class="btn-upload" onclick="document.getElementById(&#39;fileInput&#39;).click()">Выбрать файл</button>
+  <input type="file" id="fileInput" accept=".pptx,.pdf" onchange="onFileChange(event)">
+  <p class="upload-formats">.pdf (рекомендуется) или .pptx · максимум 50 МБ</p>
+</div>
+
+<div class="error-msg" id="errorMsg"></div>
+
+<div id="serverHint" style="display:none; max-width:600px; margin: 0 auto 20px; background:#fff8f0; border:1px solid #f0d8c0; border-radius:12px; padding:18px 20px; font-size:13px; color:#6a4020; line-height:1.8;">
+  <strong>Как запустить через локальный сервер:</strong><br>
+  Открой Терминал (Mac) или Командную строку (Windows) в папке с файлом и введи одну из команд:<br><br>
+  <code style="background:#fdecd8; padding:4px 10px; border-radius:6px; font-size:12px; display:block; margin-bottom:8px;">python3 -m http.server 8080</code>
+  <code style="background:#fdecd8; padding:4px 10px; border-radius:6px; font-size:12px; display:block; margin-bottom:8px;">npx serve .</code>
+  Затем открой в браузере: <strong>http://localhost:8080/mckinsey-checker.html</strong>
+</div>
+
+<button class="btn-analyze" id="analyzeBtn" disabled="" onclick="runAnalysis()">
+  Проанализировать презентацию →
+</button>
+<p class="privacy-note">🔒 Файл обрабатывается только для анализа и не сохраняется</p>
+
+<!-- LOADING -->
+<div id="loadingSection">
+  <div class="spinner"></div>
+  <p class="loading-text">Анализируем вашу презентацию...</p>
+  <p class="loading-steps" id="loadingSteps">Читаем структуру документа</p>
+</div>
+
+<!-- REPORT (hidden until analysis) -->
+<div id="reportSection">
+  <div class="report-header">
+    <div>
+      <div class="report-title" id="reportTitle">Отчёт по презентации</div>
+      <div class="report-filename" id="reportFilename"></div>
+    </div>
+    <div class="report-actions">
+      <button class="btn-action" onclick="copyReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Копировать
+      </button>
+      <button class="btn-action primary" onclick="downloadReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12m0 0-4-4m4 4 4-4M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"></path></svg>
+        Скачать PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Score overview -->
+  <div class="score-overview" id="scoreOverview">
+    <div class="total-score-circle" id="scoreCircle" style="--pct: 0%">
+      <div class="total-score-num"><span id="totalNum">—</span><span>/ 100</span></div>
+    </div>
+    <div class="score-bars" id="scoreBars"></div>
+  </div>
+
+  <!-- Detailed sections -->
+  <div class="report-sections" id="reportSections"></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <p class="section-eyebrow">Как это работает</p>
+  <div class="steps-row">
+    <div class="step-card"><div class="step-num">1</div><h4>Загрузите файл</h4><p>PPTX или PDF, до 50 МБ</p></div>
+    <div class="step-card"><div class="step-num">2</div><h4>AI анализирует</h4><p>Claude читает каждый слайд по 40+ критериям</p></div>
+    <div class="step-card"><div class="step-num">3</div><h4>Получите отчёт</h4><p>Баллы и конкретные комментарии</p></div>
+    <div class="step-card"><div class="step-num">4</div><h4>Скачайте PDF</h4><p>Готовый разбор для команды</p></div>
+  </div>
+</section>
+
+<!-- WHAT WE CHECK -->
+<section class="checks-section">
+  <p class="section-eyebrow">40+ параметров проверки</p>
+  <div class="checks-grid">
+    <div class="check-card"><span class="check-tag">Структура</span><h4>Пирамида Минто</h4><p>Главный вывод вынесен вперёд, аргументы поддерживают тезис</p></div>
+    <div class="check-card"><span class="check-tag">Структура</span><h4>MECE и SCR</h4><p>Разделы не пересекаются, покрывают тему полностью</p></div>
+    <div class="check-card"><span class="check-tag">Текст</span><h4>Action titles</h4><p>Каждый заголовок — вывод, а не тема слайда</p></div>
+    <div class="check-card"><span class="check-tag">Текст</span><h4>Executive Summary</h4><p>Первые слайды позволяют принять решение без чтения всего документа</p></div>
+    <div class="check-card"><span class="check-tag">Дизайн</span><h4>Консистентность</h4><p>Единые шрифты, цвета, сетка и отступы на всех слайдах</p></div>
+    <div class="check-card"><span class="check-tag">Данные</span><h4>Графики</h4><p>Тип, подписи, callout-выводы, источники данных</p></div>
+  </div>
+</section>
+
+<!-- BANNER for homepage -->
+<div class="banner">
+  <div class="banner-inner">
+    <div>
+      <h3>Ваша презентация — на уровне McKinsey?</h3>
+      <p>Загрузите файл и получите бесплатный разбор за 2 минуты</p>
+    </div>
+    <button class="btn-upload" onclick="window.scrollTo({top:0,behavior:&#39;smooth&#39;})">Проверить презентацию →</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Ksenia Denisova</span>
+  <span>Файлы не сохраняются · Анализ на базе Claude AI</span>
+  <a href="https://kseniadenisova.com/" style="color:var(--rose); text-decoration:none;">kseniadenisova.com</a>
+</footer>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────
+let currentFile = null;
+let reportLang  = 'ru';
+let lastReportText = '';
+
+// ─── LANG TOGGLE ─────────────────────────────────────────────
+function setLang(lang, btn) {
+  reportLang = lang;
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ─── FILE HANDLING ────────────────────────────────────────────
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('dragover');
+  const f = e.dataTransfer.files[0];
+  if (f) setFile(f);
+});
+
+function onFileChange(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
+
+function setFile(f) {
+  if (f.size > 52428800) { showError('Файл слишком большой. Максимум 50 МБ.'); return; }
+  if (!f.name.match(/\.(pptx|pdf)$/i)) { showError('Поддерживаются только .pptx и .pdf файлы.'); return; }
+  currentFile = f;
+  document.getElementById('fileName').textContent = f.name;
+  document.getElementById('fileSize').textContent = (f.size / 1024 / 1024).toFixed(1) + ' МБ';
+  document.getElementById('fileChosen').classList.add('visible');
+  uploadZone.classList.add('has-file');
+  hideError();
+  if (f.name.toLowerCase().endsWith('.pptx')) {
+    showError('⚠️ PPTX-файлы нельзя проанализировать напрямую. Конвертируйте в PDF: в PowerPoint нажмите Файл → Сохранить как → PDF, затем загрузите PDF-версию.');
+    document.getElementById('analyzeBtn').disabled = true;
+  } else {
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+function removeFile(e) {
+  e.stopPropagation();
+  currentFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileChosen').classList.remove('visible');
+  uploadZone.classList.remove('has-file');
+  document.getElementById('analyzeBtn').disabled = true;
+}
+
+// ─── ERRORS ──────────────────────────────────────────────────
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg; el.classList.add('visible');
+}
+function hideError() {
+  document.getElementById('errorMsg').classList.remove('visible');
+}
+
+// ─── LOADING STEPS ────────────────────────────────────────────
+const loadingMsgs = [
+  'Читаем структуру документа...',
+  'Проверяем логику и нарратив...',
+  'Анализируем заголовки слайдов...',
+  'Оцениваем дизайн и консистентность...',
+  'Проверяем графики и данные...',
+  'Формируем итоговый отчёт...'
+];
+let loadingInterval;
+function startLoadingAnim() {
+  let i = 0;
+  document.getElementById('loadingSteps').textContent = loadingMsgs[0];
+  loadingInterval = setInterval(() => {
+    i = (i + 1) % loadingMsgs.length;
+    document.getElementById('loadingSteps').textContent = loadingMsgs[i];
+  }, 2200);
+}
+function stopLoadingAnim() { clearInterval(loadingInterval); }
+
+// ─── MAIN ANALYSIS ────────────────────────────────────────────
+async function runAnalysis() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) { showError('Пожалуйста, введите API ключ Anthropic.'); return; }
+  if (!currentFile) { showError('Пожалуйста, выберите файл.'); return; }
+
+  hideError();
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('loadingSection').style.display = 'block';
+  document.getElementById('reportSection').style.display = 'none';
+  startLoadingAnim();
+
+  try {
+    const isPDF  = currentFile.name.toLowerCase().endsWith('.pdf');
+    const langNote = reportLang === 'ru'
+      ? 'Пиши отчёт на русском языке.'
+      : 'Write the report in English.';
+
+    const base64 = await fileToBase64(currentFile);
+
+    const systemPrompt = `Ты — старший консультант McKinsey с 15-летним опытом, который ревьюит презентации перед встречей с партнёром. Ты невероятно скрупулёзен, конкретен и безжалостно честен. Твоя задача — дать структурированный отчёт по презентации. ${langNote}
+
+Верни СТРОГО JSON следующей структуры (без markdown, без пояснений вне JSON):
+{
+  "totalScore": <число 0-100>,
+  "summary": "<2-3 предложения: главный вывод о презентации>",
+  "categories": [
+    {
+      "id": "structure",
+      "title": "Структура и логика",
+      "score": <0-100>,
+      "summary": "<1-2 предложения>",
+      "criteria": [
+        { "status": "pass|warn|fail", "label": "<название критерия>", "detail": "<конкретный комментарий>" }
+      ]
+    },
+    {
+      "id": "titles",
+      "title": "Заголовки (Action Titles)",
+      "score": <0-100>,
+      "summary": "<1-2 предложения>",
+      "criteria": [...]
+    },
+    {
+      "id": "executive",
+      "title": "Executive Summary",
+      "score": <0-100>,
+      "summary": "<1-2 предложения>",
+      "criteria": [...]
+    },
+    {
+      "id": "design",
+      "title": "Дизайн и консистентность",
+      "score": <0-100>,
+      "summary": "<1-2 предложения>",
+      "criteria": [...]
+    },
+    {
+      "id": "data",
+      "title": "Графики и данные",
+      "score": <0-100>,
+      "summary": "<1-2 предложения>",
+      "criteria": [...]
+    },
+    {
+      "id": "cta",
+      "title": "Финал и Next Steps",
+      "score": <0-100>,
+      "summary": "<1-2 предложения>",
+      "criteria": [...]
+    }
+  ],
+  "topIssues": ["<проблема 1>", "<проблема 2>", "<проблема 3>"],
+  "topStrengths": ["<сильная сторона 1>", "<сильная сторона 2>"],
+  "priorityActions": ["<действие 1>", "<действие 2>", "<действие 3>"]
+}
+
+По каждой категории оценивай по СЛЕДУЮЩИМ критериям:
+
+СТРУКТУРА: пирамидный принцип (вывод вперёд), MECE (взаимоисключающие/полные разделы), SCR (ситуация-осложнение-решение), storyline читается по заголовкам, наличие Appendix, соответствие Agenda реальной структуре.
+
+ЗАГОЛОВКИ: каждый заголовок — инсайт/вывод (не тема), заголовки самодостаточны (история читается только по ним), нет заголовков-существительных без вывода, длина ≤2 строк, один слайд — одна идея.
+
+EXECUTIVE SUMMARY: присутствует в первых 2-3 слайдах, содержит проблему + выводы + рекомендацию + next steps, достаточен для принятия решения без чтения остального.
+
+ДИЗАЙН: ≤2 шрифта, иерархия размеров, ≤3 цвета + нейтральный, акцентный цвет только для инсайтов, нет градиентов/теней/3D, выравнивание по сетке, единые отступы, нумерация слайдов, источники данных, логотип.
+
+ГРАФИКИ: тип соответствует данным, оси подписаны с единицами, нет 3D-диаграмм, legenda интегрирована, ключевая цифра выделена callout-ом, double axis только при необходимости.
+
+ФИНАЛ: есть конкретный Next Steps / CTA, рекомендации содержат кто/что/когда/результат, Appendix пронумерован отдельно.`;
+
+    const userContent = isPDF
+      ? [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
+          { type: 'text', text: 'Проанализируй эту презентацию по всем критериям McKinsey. Верни только JSON.' }
+        ]
+      : [
+          { type: 'text', text: `Это содержимое PPTX-файла "${currentFile.name}". К сожалению, PPTX напрямую не поддерживается как документ, поэтому проведи анализ на основе имеющейся информации о типичной структуре подобных файлов. Верни JSON с оценкой по всем категориям, отметив что файл нужно конвертировать в PDF для точного анализа.` }
+        ];
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 120000);
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userContent }]
+      })
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || `API error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const rawText = data.content.find(b => b.type === 'text')?.text || '';
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Не удалось разобрать ответ API');
+    const report = JSON.parse(jsonMatch[0]);
+
+    lastReportText = buildPlainText(report);
+    renderReport(report, currentFile.name);
+
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      showError('Превышено время ожидания (2 мин). Попробуйте файл меньшего размера.');
+    } else if (err.message === 'Failed to fetch' || err.message.includes('ERR_CONNECTION')) {
+      showError('Соединение прервано. Скорее всего файл слишком большой — попробуйте PDF до 5 МБ.');
+      document.getElementById('serverHint').style.display = 'block';
+    } else {
+      showError('Ошибка: ' + err.message);
+    }
+  } finally {
+    stopLoadingAnim();
+    document.getElementById('loadingSection').style.display = 'none';
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+// ─── FILE TO BASE64 ───────────────────────────────────────────
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+// ─── RENDER REPORT ────────────────────────────────────────────
+function renderReport(report, filename) {
+  document.getElementById('reportFilename').textContent = filename;
+  document.getElementById('reportTitle').textContent =
+    reportLang === 'ru' ? 'Отчёт по презентации' : 'Presentation Report';
+
+  // Total score circle
+  const score = Math.round(report.totalScore);
+  document.getElementById('totalNum').textContent = score;
+  document.getElementById('scoreCircle').style.setProperty('--pct', score + '%');
+
+  // Score bars
+  const barsEl = document.getElementById('scoreBars');
+  barsEl.innerHTML = '';
+  report.categories.forEach(cat => {
+    const pct = Math.round(cat.score);
+    const cls = pct >= 70 ? '' : pct >= 45 ? 'warn' : 'danger';
+    barsEl.innerHTML += `
+      <div class="bar-row">
+        <span class="bar-label">${cat.title}</span>
+        <div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
+        <span class="bar-val">${pct}%</span>
+      </div>`;
+  });
+
+  // Sections
+  const sectionsEl = document.getElementById('reportSections');
+  sectionsEl.innerHTML = '';
+
+  // Summary block
+  sectionsEl.innerHTML += `
+    <div class="report-block">
+      <div class="report-block-header open" onclick="toggleBlock(this)">
+        <div class="block-title-row">
+          <div class="block-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m-9-8h.01M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg></div>
+          <span class="block-title">${reportLang === 'ru' ? 'Общий вывод' : 'Summary'}</span>
+        </div>
+        <span class="chevron open">▾</span>
+      </div>
+      <div class="report-block-body open">
+        <p>${report.summary}</p>
+        ${report.topStrengths?.length ? `<p><strong>${reportLang === 'ru' ? '✅ Сильные стороны:' : '✅ Strengths:'}</strong> ${report.topStrengths.join('; ')}</p>` : ''}
+        ${report.topIssues?.length ? `<p><strong>${reportLang === 'ru' ? '⚠️ Главные проблемы:' : '⚠️ Key issues:'}</strong> ${report.topIssues.join('; ')}</p>` : ''}
+        ${report.priorityActions?.length ? `<p><strong>${reportLang === 'ru' ? '🎯 Приоритетные действия:' : '🎯 Priority actions:'}</strong><br>${report.priorityActions.map((a, i) => `${i+1}. ${a}`).join('<br>')}</p>` : ''}
+      </div>
+    </div>`;
+
+  // Category blocks
+  report.categories.forEach(cat => {
+    const score = Math.round(cat.score);
+    const badgeCls = score >= 70 ? 'badge-good' : score >= 45 ? 'badge-ok' : 'badge-bad';
+    const criteriaHtml = (cat.criteria || []).map(c => {
+      const icon = c.status === 'pass' ? '✅' : c.status === 'warn' ? '⚠️' : '❌';
+      const cls  = c.status === 'pass' ? 'ci-pass' : c.status === 'warn' ? 'ci-warn' : 'ci-fail';
+      return `<li class="criteria-item">
+        <span class="criteria-icon ${cls}">${icon}</span>
+        <div class="ci-label"><strong>${c.label}</strong><div class="ci-detail">${c.detail}</div></div>
+      </li>`;
+    }).join('');
+
+    sectionsEl.innerHTML += `
+      <div class="report-block">
+        <div class="report-block-header" onclick="toggleBlock(this)">
+          <div class="block-title-row">
+            <div class="block-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg></div>
+            <span class="block-title">${cat.title}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="block-score-badge ${badgeCls}">${score}%</span>
+            <span class="chevron">▾</span>
+          </div>
+        </div>
+        <div class="report-block-body">
+          <p>${cat.summary}</p>
+          <ul class="criteria-list">${criteriaHtml}</ul>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('reportSection').style.display = 'block';
+  document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── ACCORDION ────────────────────────────────────────────────
+function toggleBlock(header) {
+  const body    = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const isOpen  = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
+// ─── COPY ─────────────────────────────────────────────────────
+function copyReport() {
+  navigator.clipboard.writeText(lastReportText).then(() => {
+    const btn = document.querySelector('.btn-action:not(.primary)');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ Скопировано';
+    setTimeout(() => btn.innerHTML = orig, 2000);
+  });
+}
+
+// ─── PLAIN TEXT ───────────────────────────────────────────────
+function buildPlainText(report) {
+  let t = `McKinsey Presentation Checker — Отчёт\n${'='.repeat(40)}\n\n`;
+  t += `Итоговый балл: ${report.totalScore}/100\n\n`;
+  t += `${report.summary}\n\n`;
+  if (report.topStrengths?.length) t += `Сильные стороны:\n${report.topStrengths.map(s => '• ' + s).join('\n')}\n\n`;
+  if (report.topIssues?.length) t += `Главные проблемы:\n${report.topIssues.map(s => '• ' + s).join('\n')}\n\n`;
+  if (report.priorityActions?.length) t += `Приоритетные действия:\n${report.priorityActions.map((s,i) => `${i+1}. ${s}`).join('\n')}\n\n`;
+  report.categories.forEach(cat => {
+    t += `\n─── ${cat.title} (${Math.round(cat.score)}%) ───\n`;
+    t += cat.summary + '\n';
+    (cat.criteria || []).forEach(c => {
+      const icon = c.status === 'pass' ? '✅' : c.status === 'warn' ? '⚠️' : '❌';
+      t += `${icon} ${c.label}: ${c.detail}\n`;
+    });
+  });
+  return t;
+}
+
+// ─── DOWNLOAD PDF ─────────────────────────────────────────────
+function downloadReport() {
+  const win = window.open('', '_blank');
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>McKinsey Checker Report</title>
+    <style>
+      body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 24px; color: #2a1f1a; line-height: 1.7; }
+      h1 { font-size: 28px; color: #c4897a; margin-bottom: 8px; }
+      h2 { font-size: 18px; margin-top: 32px; margin-bottom: 8px; border-bottom: 1px solid #e8d8d0; padding-bottom: 8px; }
+      .score { font-size: 48px; color: #c4897a; font-weight: bold; }
+      .pass { color: #3a7a4a; } .warn { color: #8a5a20; } .fail { color: #8a3030; }
+      ul { padding-left: 0; list-style: none; }
+      li { margin-bottom: 6px; }
+      .meta { color: #7a6258; font-size: 13px; margin-bottom: 32px; }
+      @media print { body { margin: 20px; } }
+    </style></head><body>
+    <h1>McKinsey Presentation Checker</h1>
+    <p class="meta">Отчёт сгенерирован · ${new Date().toLocaleDateString('ru-RU')} · kseniadenisova.com</p>
+    <pre style="white-space:pre-wrap;font-family:Georgia,serif;font-size:14px">${lastReportText.replace(/</g,'&lt;')}</pre>
+    <script>window.onload=()=>window.print()<\/script>
+    </body></html>`;
+  win.document.write(html);
+  win.document.close();
+}
+</script>
+
+
+</body></html>
