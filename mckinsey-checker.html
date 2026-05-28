@@ -396,6 +396,39 @@
     .banner-inner { flex-direction: column; }
     footer { flex-direction: column; text-align: center; }
   }
+
+  /* ─── GOAL SELECTOR ────────────────────────────── */
+  .goal-section {
+    max-width: 600px; margin: 0 auto 32px; padding: 0 24px;
+  }
+  .goal-label {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 14px; display: block;
+  }
+  .goal-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .goal-card {
+    border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 14px 12px; text-align: center; cursor: pointer;
+    background: var(--white); transition: all 0.15s;
+    font-family: var(--sans);
+  }
+  .goal-card:hover { border-color: var(--rose); background: var(--blush); }
+  .goal-card.selected { border-color: var(--rose); background: var(--blush); box-shadow: 0 0 0 3px var(--rose-lt); }
+  .goal-card .goal-emoji { font-size: 22px; display: block; margin-bottom: 7px; }
+  .goal-card .goal-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.4; display: block; }
+  .goal-custom { margin-top: 10px; }
+  .goal-custom input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-family: var(--sans);
+    background: var(--white); color: var(--text); outline: none;
+    transition: border-color 0.2s; display: none;
+  }
+  .goal-custom input.visible { display: block; }
+  .goal-custom input:focus { border-color: var(--rose); }
+  @media (max-width: 640px) { .goal-grid { grid-template-columns: repeat(2, 1fr); } }
+
 </style>
 </head>
 <body>
@@ -427,6 +460,40 @@
   <span>Язык отчёта:</span>
   <button class="toggle-btn active" onclick="setLang('ru', this)">Русский</button>
   <button class="toggle-btn" onclick="setLang('en', this)">English</button>
+</div>
+
+<!-- GOAL SELECTOR -->
+<div class="goal-section">
+  <span class="goal-label">Цель вашей презентации</span>
+  <div class="goal-grid" id="goalGrid">
+    <button class="goal-card" onclick="selectGoal(this, 'new_audience')" type="button">
+      <span class="goal-emoji">📦</span>
+      <span class="goal-name">Представить продукт новой аудитории</span>
+    </button>
+    <button class="goal-card" onclick="selectGoal(this, 'internal_sell')" type="button">
+      <span class="goal-emoji">🏢</span>
+      <span class="goal-name">Продать идею внутри организации</span>
+    </button>
+    <button class="goal-card" onclick="selectGoal(this, 'prove_project')" type="button">
+      <span class="goal-emoji">💡</span>
+      <span class="goal-name">Доказать необходимость проекта</span>
+    </button>
+    <button class="goal-card" onclick="selectGoal(this, 'monthly_report')" type="button">
+      <span class="goal-emoji">📊</span>
+      <span class="goal-name">Отчёт о деятельности</span>
+    </button>
+    <button class="goal-card" onclick="selectGoal(this, 'board')" type="button">
+      <span class="goal-emoji">🏛️</span>
+      <span class="goal-name">Управляющий комитет / Board</span>
+    </button>
+    <button class="goal-card" onclick="selectGoal(this, 'custom')" type="button">
+      <span class="goal-emoji">✍️</span>
+      <span class="goal-name">Своя цель</span>
+    </button>
+  </div>
+  <div class="goal-custom">
+    <input type="text" id="customGoal" placeholder="Опишите цель вашей презентации..." maxlength="200">
+  </div>
 </div>
 
 <!-- UPLOAD ZONE -->
@@ -547,6 +614,47 @@
 let currentFile = null;
 let reportLang  = 'ru';
 let lastReportText = '';
+let selectedGoal = null;
+
+// ─── GOAL SELECTOR ───────────────────────────────────────────
+function selectGoal(btn, goalId) {
+  document.querySelectorAll('.goal-card').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedGoal = goalId;
+  const customInput = document.getElementById('customGoal');
+  if (goalId === 'custom') {
+    customInput.classList.add('visible');
+    customInput.focus();
+  } else {
+    customInput.classList.remove('visible');
+  }
+}
+
+const goalLabels = {
+  new_audience:  'Представить продукт новой аудитории',
+  internal_sell: 'Продать идею внутри организации',
+  prove_project: 'Доказать необходимость проекта',
+  monthly_report:'Отчёт о деятельности',
+  board:         'Управляющий комитет / Board',
+  custom:        'custom'
+};
+
+function getGoalText() {
+  if (!selectedGoal) return null;
+  if (selectedGoal === 'custom') {
+    const v = document.getElementById('customGoal').value.trim();
+    return v || null;
+  }
+  return goalLabels[selectedGoal] || null;
+}
+
+const goalPromptAdditions = {
+  new_audience: `ЦЕЛЬ — Представить продукт новой аудитории: особое внимание уделяй наличию контекста (кто мы, какую проблему решаем), ясности ценностного предложения, понятности для людей вне индустрии, наличию конкретного CTA в конце.`,
+  internal_sell: `ЦЕЛЬ — Продать идею внутри организации: особое внимание уделяй WIIFM (what's in it for me для каждого стейкхолдера), работе с возражениями, наличию слайда с рисками и митигацией, конкретности next steps с ответственными.`,
+  prove_project: `ЦЕЛЬ — Доказать необходимость проекта: особое внимание уделяй обоснованию проблемы данными, ROI и бизнес-кейсу, сравнению "сделать vs не сделать", чёткости запрашиваемых ресурсов и сроков.`,
+  monthly_report: `ЦЕЛЬ — Отчёт о деятельности: особое внимание уделяй динамике показателей (MoM/YoY), наличию выводов из данных (не просто цифры), объяснению отклонений от плана, конкретности планов на следующий период.`,
+  board: `ЦЕЛЬ — Управляющий комитет / Board: особое внимание уделяй Executive Summary (должен быть исчерпывающим), фокусу на стратегических решениях а не операционных деталях, чёткости рекомендаций с финансовым обоснованием, минимализму текста и максимуму данных.`
+};
 
 // ─── LANG TOGGLE ─────────────────────────────────────────────
 function setLang(lang, btn) {
@@ -642,7 +750,14 @@ async function runAnalysis() {
 
     const base64 = await fileToBase64(currentFile);
 
-    const systemPrompt = `Ты — старший консультант McKinsey с 15-летним опытом, который ревьюит презентации перед встречей с партнёром. Ты невероятно скрупулёзен, конкретен и безжалостно честен. Твоя задача — дать структурированный отчёт по презентации. ${langNote}
+        const goalText = getGoalText();
+    const goalContext = selectedGoal && selectedGoal !== 'custom'
+      ? goalPromptAdditions[selectedGoal]
+      : goalText ? `ЦЕЛЬ презентации: ${goalText}. Оценивай все критерии с учётом этой цели.` : '';
+
+    const systemPrompt = `Ты — внимательный и вдохновляющий ментор по презентациям с опытом McKinsey. Ты искренне веришь в потенциал каждого автора и даёшь обратную связь так, чтобы человек почувствовал поддержку и захотел улучшить работу — а не расстроился. Твой стиль: сначала признай усилия и что уже сделано хорошо, затем покажи зоны роста как возможности ("добавьте X — и презентация станет значительно сильнее"), используй язык "почти у цели", "один шаг до отличного результата", "это легко исправить". Будь конкретен и практичен. ${langNote}
+
+${goalContext}
 
 Верни СТРОГО JSON следующей структуры (без markdown, без пояснений вне JSON):
 {
@@ -716,7 +831,7 @@ EXECUTIVE SUMMARY: присутствует в первых 2-3 слайдах, 
     const userContent = isPDF
       ? [
           { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
-          { type: 'text', text: 'Проанализируй эту презентацию по всем критериям McKinsey. Верни только JSON.' }
+          { type: 'text', text: `Проанализируй эту презентацию по всем критериям McKinsey${goalText ? '. Цель презентации: ' + goalText : ''}. Верни только JSON.` }
         ]
       : [
           { type: 'text', text: `Это содержимое PPTX-файла "${currentFile.name}". К сожалению, PPTX напрямую не поддерживается как документ, поэтому проведи анализ на основе имеющейся информации о типичной структуре подобных файлов. Верни JSON с оценкой по всем категориям, отметив что файл нужно конвертировать в PDF для точного анализа.` }
@@ -920,7 +1035,40 @@ function downloadReport() {
       li { margin-bottom: 6px; }
       .meta { color: #7a6258; font-size: 13px; margin-bottom: 32px; }
       @media print { body { margin: 20px; } }
-    </style></head><body>
+    
+  /* ─── GOAL SELECTOR ────────────────────────────── */
+  .goal-section {
+    max-width: 600px; margin: 0 auto 32px; padding: 0 24px;
+  }
+  .goal-label {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 14px; display: block;
+  }
+  .goal-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .goal-card {
+    border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 14px 12px; text-align: center; cursor: pointer;
+    background: var(--white); transition: all 0.15s;
+    font-family: var(--sans);
+  }
+  .goal-card:hover { border-color: var(--rose); background: var(--blush); }
+  .goal-card.selected { border-color: var(--rose); background: var(--blush); box-shadow: 0 0 0 3px var(--rose-lt); }
+  .goal-card .goal-emoji { font-size: 22px; display: block; margin-bottom: 7px; }
+  .goal-card .goal-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.4; display: block; }
+  .goal-custom { margin-top: 10px; }
+  .goal-custom input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-family: var(--sans);
+    background: var(--white); color: var(--text); outline: none;
+    transition: border-color 0.2s; display: none;
+  }
+  .goal-custom input.visible { display: block; }
+  .goal-custom input:focus { border-color: var(--rose); }
+  @media (max-width: 640px) { .goal-grid { grid-template-columns: repeat(2, 1fr); } }
+
+</style></head><body>
     <h1>McKinsey Presentation Checker</h1>
     <p class="meta">Отчёт сгенерирован · ${new Date().toLocaleDateString('ru-RU')} · kseniadenisova.com</p>
     <pre style="white-space:pre-wrap;font-family:Georgia,serif;font-size:14px">${lastReportText.replace(/</g,'&lt;')}</pre>
