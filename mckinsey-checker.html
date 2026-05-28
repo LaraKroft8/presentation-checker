@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0062)file:///Users/kseniadenisova/Downloads/mckinsey-checker_2.html -->
-<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>McKinsey Presentation Checker · Ksenia Denisova</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./McKinsey Presentation Checker · Ksenia Denisova_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   /* ─── RESET & BASE ─────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -402,10 +402,10 @@
 
 <!-- NAV -->
 <nav>
-  <a href="https://kseniadenisova.com/" class="nav-logo">Ksenia Denisova</a>
+  <a href="https://kseniadenisova.com" class="nav-logo">Ksenia Denisova</a>
   <div class="nav-links">
     <a href="https://kseniadenisova.com/kurs/">Курсы</a>
-    <a href="https://kseniadenisova.com/" class="nav-btn">← На сайт</a>
+    <a href="https://kseniadenisova.com" class="nav-btn">← На сайт</a>
   </div>
 </nav>
 
@@ -421,18 +421,18 @@
   <label for="apiKey">API ключ:</label>
   <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off">
 </div>
-<p class="apikey-hint">🔐 Ключ используется только в вашем браузере и никуда не отправляется. Получить ключ: <a href="https://console.anthropic.com/" target="_blank" style="color:var(--rose)">console.anthropic.com</a></p>
+<p class="apikey-hint">🔐 Ключ используется только в вашем браузере и никуда не отправляется. Получить ключ: <a href="https://console.anthropic.com" target="_blank" style="color:var(--rose)">console.anthropic.com</a></p>
 
 <div class="lang-toggle">
   <span>Язык отчёта:</span>
-  <button class="toggle-btn active" onclick="setLang(&#39;ru&#39;, this)">Русский</button>
-  <button class="toggle-btn" onclick="setLang(&#39;en&#39;, this)">English</button>
+  <button class="toggle-btn active" onclick="setLang('ru', this)">Русский</button>
+  <button class="toggle-btn" onclick="setLang('en', this)">English</button>
 </div>
 
 <!-- UPLOAD ZONE -->
 <div class="upload-card" id="uploadZone">
   <div class="upload-icon">
-    <svg viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 4v12M8 8l4-4 4 4"></path></svg>
+    <svg viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 4v12M8 8l4-4 4 4"/></svg>
   </div>
   <h3>Загрузите вашу презентацию</h3>
   <p>Перетащите файл сюда или выберите вручную</p>
@@ -442,7 +442,7 @@
     <span class="file-chosen-size" id="fileSize"></span>
     <button class="btn-remove" onclick="removeFile(event)">✕</button>
   </div>
-  <button class="btn-upload" onclick="document.getElementById(&#39;fileInput&#39;).click()">Выбрать файл</button>
+  <button class="btn-upload" onclick="document.getElementById('fileInput').click()">Выбрать файл</button>
   <input type="file" id="fileInput" accept=".pptx,.pdf" onchange="onFileChange(event)">
   <p class="upload-formats">.pdf (рекомендуется) или .pptx · максимум 50 МБ</p>
 </div>
@@ -457,7 +457,7 @@
   Затем открой в браузере: <strong>http://localhost:8080/mckinsey-checker.html</strong>
 </div>
 
-<button class="btn-analyze" id="analyzeBtn" disabled="" onclick="runAnalysis()">
+<button class="btn-analyze" id="analyzeBtn" disabled onclick="runAnalysis()">
   Проанализировать презентацию →
 </button>
 <p class="privacy-note">🔒 Файл обрабатывается только для анализа и не сохраняется</p>
@@ -478,11 +478,11 @@
     </div>
     <div class="report-actions">
       <button class="btn-action" onclick="copyReport()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Копировать
       </button>
       <button class="btn-action primary" onclick="downloadReport()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12m0 0-4-4m4 4 4-4M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"></path></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12m0 0-4-4m4 4 4-4M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg>
         Скачать PDF
       </button>
     </div>
@@ -531,7 +531,7 @@
       <h3>Ваша презентация — на уровне McKinsey?</h3>
       <p>Загрузите файл и получите бесплатный разбор за 2 минуты</p>
     </div>
-    <button class="btn-upload" onclick="window.scrollTo({top:0,behavior:&#39;smooth&#39;})">Проверить презентацию →</button>
+    <button class="btn-upload" onclick="window.scrollTo({top:0,behavior:'smooth'})">Проверить презентацию →</button>
   </div>
 </div>
 
@@ -539,7 +539,7 @@
 <footer>
   <span>© 2025 Ksenia Denisova</span>
   <span>Файлы не сохраняются · Анализ на базе Claude AI</span>
-  <a href="https://kseniadenisova.com/" style="color:var(--rose); text-decoration:none;">kseniadenisova.com</a>
+  <a href="https://kseniadenisova.com" style="color:var(--rose); text-decoration:none;">kseniadenisova.com</a>
 </footer>
 
 <script>
@@ -930,6 +930,5 @@ function downloadReport() {
   win.document.close();
 }
 </script>
-
-
-</body></html>
+</body>
+</html>
