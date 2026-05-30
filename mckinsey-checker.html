@@ -912,7 +912,7 @@ EXECUTIVE SUMMARY:
         ];
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 120000);
+    const timeout = setTimeout(() => controller.abort(), 300000);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -948,7 +948,7 @@ EXECUTIVE SUMMARY:
 
   } catch (err) {
     if (err.name === 'AbortError') {
-      showError('Превышено время ожидания (2 мин). Попробуйте файл меньшего размера.');
+      showError('Превышено время ожидания (5 мин). Попробуйте файл меньшего размера.');
     } else if (err.message === 'Failed to fetch' || err.message.includes('ERR_CONNECTION')) {
       showError('Соединение прервано. Скорее всего файл слишком большой — попробуйте PDF до 5 МБ.');
       document.getElementById('serverHint').style.display = 'block';
