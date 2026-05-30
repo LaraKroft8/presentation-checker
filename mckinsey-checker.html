@@ -460,12 +460,12 @@
 <!-- HERO + UPLOAD -->
 <section class="hero">
   <span class="eyebrow">Бесплатный инструмент</span>
-  <h1>Проверьте презентацию на соответствие<br><em>лучшим консалтинговым практикам</em></h1>
+  <h1>Проверьте презентацию<br>на соответствие <em>консалтинговым best practices</em></h1>
   <p class="hero-sub">Загрузите PDF-файл и получите детальный разбор по стандартам MBB: понятность и удобство восприятия, аккуратность оформления, эстетическая красота.</p>
   <div class="hero-stats">
     <div class="hero-stat"><span class="stat-num">50+</span><span class="stat-label">критериев оценки</span></div>
     <div class="hero-stat-divider"></div>
-    <div class="hero-stat"><span class="stat-num">~60 сек</span><span class="stat-label">время анализа</span></div>
+    <div class="hero-stat"><span class="stat-num">~3 мин</span><span class="stat-label">время анализа</span></div>
   </div>
 </section>
 
@@ -772,7 +772,7 @@ async function runAnalysis() {
   try {
     const isPDF  = currentFile.name.toLowerCase().endsWith('.pdf');
     const langNote = reportLang === 'ru'
-      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском.'
+      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно: избегай кальки с английского, не используй слова-паразиты типа 'данный', 'является', 'осуществляет'. Пиши живым русским языком — как опытный редактор. Не начинай предложения с 'это', не злоупотребляй тире вместо других знаков препинания. В summary и detail пиши конкретно и по делу, без воды.'
       : 'Write the entire report in English. All JSON fields (title, summary, label, detail, etc.) must be in English.';
 
     const base64 = await fileToBase64(currentFile);
@@ -816,7 +816,7 @@ ${goalContext}
     },
     {
       "id": "design",
-      "title": "Дизайн и консистентность",
+      "title": "Последовательность оформления",
       "score": <0-100>,
       "summary": "<1-2 предложения>",
       "criteria": [...]
