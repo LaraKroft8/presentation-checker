@@ -772,7 +772,7 @@ async function runAnalysis() {
   try {
     const isPDF  = currentFile.name.toLowerCase().endsWith('.pdf');
     const langNote = reportLang === 'ru'
-      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно: избегай кальки с английского, не используй слова-паразиты типа 'данный', 'является', 'осуществляет'. Пиши живым русским языком — как опытный редактор. Не начинай предложения с 'это', не злоупотребляй тире вместо других знаков препинания. В summary и detail пиши конкретно и по делу, без воды.'
+      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно: избегай кальки с английского, не используй слова-паразиты вроде «данный», «является», «осуществляет». Пиши живым русским языком — как опытный редактор. Пиши конкретно и по делу, без воды.'
       : 'Write the entire report in English. All JSON fields (title, summary, label, detail, etc.) must be in English.';
 
     const base64 = await fileToBase64(currentFile);
