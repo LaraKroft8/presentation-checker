@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>McKinsey Presentation Checker · Ksenia Denisova</title>
+<title>Consulting-Grade Presentation Checker · Ksenia Denisova</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -89,6 +89,19 @@
     max-width: 520px; margin: 0 auto 48px;
     line-height: 1.75;
   }
+
+
+  /* ─── HERO STATS ────────────────────────────────── */
+  .hero-stats {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin: 0 auto 40px; max-width: 420px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 24px;
+  }
+  .hero-stat { text-align: center; flex: 1; }
+  .stat-num { display: block; font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--rose); line-height: 1.1; }
+  .stat-label { display: block; font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .hero-stat-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; margin: 0 8px; }
 
   /* ─── UPLOAD CARD ──────────────────────────────── */
   .upload-card {
@@ -341,6 +354,8 @@
     max-width: 800px; margin: 0 auto 60px; padding: 0 24px;
   }
   .checks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .checks-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 700px) { .checks-grid-4 { grid-template-columns: repeat(2, 1fr); } }
   .check-card {
     background: var(--white); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 18px 16px;
@@ -445,8 +460,13 @@
 <!-- HERO + UPLOAD -->
 <section class="hero">
   <span class="eyebrow">Бесплатный инструмент</span>
-  <h1>Проверьте презентацию<br>по стандартам <em>McKinsey</em></h1>
-  <p class="hero-sub">Загрузите PPTX или PDF — и получите детальный разбор по 40+ параметрам: структура, логика, дизайн, данные.</p>
+  <h1>Проверьте презентацию на соответствие<br><em>лучшим консалтинговым практикам</em></h1>
+  <p class="hero-sub">Загрузите PDF-файл и получите детальный разбор по стандартам MBB: понятность и удобство восприятия, аккуратность оформления, эстетическая красота.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="stat-num">50+</span><span class="stat-label">критериев оценки</span></div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat"><span class="stat-num">~60 сек</span><span class="stat-label">время анализа</span></div>
+  </div>
 </section>
 
 <!-- API KEY + LANG -->
@@ -476,7 +496,7 @@
     </button>
     <button class="goal-card" onclick="selectGoal(this, 'prove_project')" type="button">
       <span class="goal-emoji">💡</span>
-      <span class="goal-name">Доказать необходимость проекта</span>
+      <span class="goal-name">Обосновать необходимость инвестиций</span>
     </button>
     <button class="goal-card" onclick="selectGoal(this, 'monthly_report')" type="button">
       <span class="goal-emoji">📊</span>
@@ -484,7 +504,7 @@
     </button>
     <button class="goal-card" onclick="selectGoal(this, 'board')" type="button">
       <span class="goal-emoji">🏛️</span>
-      <span class="goal-name">Управляющий комитет / Board</span>
+      <span class="goal-name">Управляющий комитет / BoD</span>
     </button>
     <button class="goal-card" onclick="selectGoal(this, 'custom')" type="button">
       <span class="goal-emoji">✍️</span>
@@ -501,7 +521,7 @@
   <div class="upload-icon">
     <svg viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M12 4v12M8 8l4-4 4 4"/></svg>
   </div>
-  <h3>Загрузите вашу презентацию</h3>
+  <h3>Загрузите PDF-файл</h3>
   <p>Перетащите файл сюда или выберите вручную</p>
   <div class="file-chosen" id="fileChosen">
     <span>📄</span>
@@ -510,8 +530,8 @@
     <button class="btn-remove" onclick="removeFile(event)">✕</button>
   </div>
   <button class="btn-upload" onclick="document.getElementById('fileInput').click()">Выбрать файл</button>
-  <input type="file" id="fileInput" accept=".pptx,.pdf" onchange="onFileChange(event)">
-  <p class="upload-formats">.pdf (рекомендуется) или .pptx · максимум 50 МБ</p>
+  <input type="file" id="fileInput" accept=".pdf" onchange="onFileChange(event)">
+  <p class="upload-formats">Файл в формате PDF · максимум 50 МБ</p>
 </div>
 
 <div class="error-msg" id="errorMsg"></div>
@@ -571,8 +591,8 @@
 <section class="how-section">
   <p class="section-eyebrow">Как это работает</p>
   <div class="steps-row">
-    <div class="step-card"><div class="step-num">1</div><h4>Загрузите файл</h4><p>PPTX или PDF, до 50 МБ</p></div>
-    <div class="step-card"><div class="step-num">2</div><h4>AI анализирует</h4><p>Claude читает каждый слайд по 40+ критериям</p></div>
+    <div class="step-card"><div class="step-num">1</div><h4>Загрузите файл</h4><p>PDF-файл, до 50 МБ</p></div>
+    <div class="step-card"><div class="step-num">2</div><h4>AI анализирует</h4><p>Claude читает каждый слайд по 50+ критериям</p></div>
     <div class="step-card"><div class="step-num">3</div><h4>Получите отчёт</h4><p>Баллы и конкретные комментарии</p></div>
     <div class="step-card"><div class="step-num">4</div><h4>Скачайте PDF</h4><p>Готовый разбор для команды</p></div>
   </div>
@@ -580,32 +600,44 @@
 
 <!-- WHAT WE CHECK -->
 <section class="checks-section">
-  <p class="section-eyebrow">40+ параметров проверки</p>
-  <div class="checks-grid">
-    <div class="check-card"><span class="check-tag">Структура</span><h4>Пирамида Минто</h4><p>Главный вывод вынесен вперёд, аргументы поддерживают тезис</p></div>
-    <div class="check-card"><span class="check-tag">Структура</span><h4>MECE и SCR</h4><p>Разделы не пересекаются, покрывают тему полностью</p></div>
-    <div class="check-card"><span class="check-tag">Текст</span><h4>Action titles</h4><p>Каждый заголовок — вывод, а не тема слайда</p></div>
-    <div class="check-card"><span class="check-tag">Текст</span><h4>Executive Summary</h4><p>Первые слайды позволяют принять решение без чтения всего документа</p></div>
-    <div class="check-card"><span class="check-tag">Дизайн</span><h4>Консистентность</h4><p>Единые шрифты, цвета, сетка и отступы на всех слайдах</p></div>
-    <div class="check-card"><span class="check-tag">Данные</span><h4>Графики</h4><p>Тип, подписи, callout-выводы, источники данных</p></div>
+  <p class="section-eyebrow">Что проверяем</p>
+  <div class="checks-grid checks-grid-4">
+    <div class="check-card">
+      <span class="check-tag">Понятность</span>
+      <h4>Структура и логика</h4>
+      <p>Принцип пирамиды, MECE, SCR, storyline — история читается только по заголовкам слайдов</p>
+    </div>
+    <div class="check-card">
+      <span class="check-tag">Оформление</span>
+      <h4>Единообразие и точность</h4>
+      <p>Шрифты, цвета, выравнивание, отступы, нумерация страниц — всё последовательно на каждом слайде</p>
+    </div>
+    <div class="check-card">
+      <span class="check-tag">Дизайн</span>
+      <h4>Эстетика и акценты</h4>
+      <p>Визуальные выделения, callouts, цифры, цветовые акценты — дизайн усиливает сообщение, а не отвлекает</p>
+    </div>
+    <div class="check-card">
+      <span class="check-tag">Данные</span>
+      <h4>Графики и источники</h4>
+      <p>Тип графика соответствует данным, оси подписаны, источники указаны, ключевой вывод выделен</p>
+    </div>
   </div>
 </section>
 
-<!-- BANNER for homepage -->
-<div class="banner">
-  <div class="banner-inner">
-    <div>
-      <h3>Ваша презентация — на уровне McKinsey?</h3>
-      <p>Загрузите файл и получите бесплатный разбор за 2 минуты</p>
-    </div>
-    <button class="btn-upload" onclick="window.scrollTo({top:0,behavior:'smooth'})">Проверить презентацию →</button>
+<!-- DYNAMIC SUMMARY BLOCK -->
+<div class="banner" id="summaryBannerWrap" style="display:none">
+  <div class="banner-inner" id="summaryBannerInner" style="flex-direction:column; align-items:flex-start; gap:12px;">
+    <div style="font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--rose);">Краткий итог</div>
+    <p id="summaryBannerText" style="font-size:15px; color:var(--text); line-height:1.75;"></p>
+    <button class="btn-upload" onclick="window.scrollTo({top:0,behavior:'smooth'})">Проверить другую презентацию →</button>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <span>© 2025 Ksenia Denisova</span>
-  <span>Файлы не сохраняются · Анализ на базе Claude AI</span>
+  <span>© 2026 Ksenia Denisova</span>
+  <span>Файлы не сохраняются · Анализ по стандартам MBB-консалтинга</span>
   <a href="https://kseniadenisova.com" style="color:var(--rose); text-decoration:none;">kseniadenisova.com</a>
 </footer>
 
@@ -633,9 +665,9 @@ function selectGoal(btn, goalId) {
 const goalLabels = {
   new_audience:  'Представить продукт новой аудитории',
   internal_sell: 'Продать идею внутри организации',
-  prove_project: 'Доказать необходимость проекта',
+  prove_project: 'Обосновать необходимость инвестиций',
   monthly_report:'Отчёт о деятельности',
-  board:         'Управляющий комитет / Board',
+  board:         'Управляющий комитет / BoD',
   custom:        'custom'
 };
 
@@ -649,11 +681,11 @@ function getGoalText() {
 }
 
 const goalPromptAdditions = {
-  new_audience: `ЦЕЛЬ — Представить продукт новой аудитории: особое внимание уделяй наличию контекста (кто мы, какую проблему решаем), ясности ценностного предложения, понятности для людей вне индустрии, наличию конкретного CTA в конце.`,
-  internal_sell: `ЦЕЛЬ — Продать идею внутри организации: особое внимание уделяй WIIFM (what's in it for me для каждого стейкхолдера), работе с возражениями, наличию слайда с рисками и митигацией, конкретности next steps с ответственными.`,
-  prove_project: `ЦЕЛЬ — Доказать необходимость проекта: особое внимание уделяй обоснованию проблемы данными, ROI и бизнес-кейсу, сравнению "сделать vs не сделать", чёткости запрашиваемых ресурсов и сроков.`,
-  monthly_report: `ЦЕЛЬ — Отчёт о деятельности: особое внимание уделяй динамике показателей (MoM/YoY), наличию выводов из данных (не просто цифры), объяснению отклонений от плана, конкретности планов на следующий период.`,
-  board: `ЦЕЛЬ — Управляющий комитет / Board: особое внимание уделяй Executive Summary (должен быть исчерпывающим), фокусу на стратегических решениях а не операционных деталях, чёткости рекомендаций с финансовым обоснованием, минимализму текста и максимуму данных.`
+  new_audience: `ЦЕЛЬ — Представить продукт новой аудитории: проверяй наличие контекста (кто мы, какую проблему решаем), ясность ценностного предложения, понятность для людей вне индустрии, наличие конкретного CTA в конце.`,
+  internal_sell: `ЦЕЛЬ — Продать идею внутри организации: проверяй WIIFM (what's in it for me для каждого стейкхолдера), наличие слайда с рисками и митигацией, конкретность next steps с ответственными и сроками. Пирамидный принцип особенно важен.`,
+  prove_project: `ЦЕЛЬ — Обосновать необходимость инвестиций: проверяй обоснование проблемы данными, ROI и бизнес-кейс, сравнение "сделать vs не сделать", чёткость запрашиваемых ресурсов и сроков.`,
+  monthly_report: `ЦЕЛЬ — Отчёт о деятельности: проверяй динамику показателей (MoM/YoY), наличие выводов из данных (не просто цифры), объяснение отклонений от плана, конкретность планов на следующий период. Каждый график должен иметь callout с ключевым инсайтом.`,
+  board: `ЦЕЛЬ — Управляющий комитет / BoD: проверяй Executive Summary (должен быть самодостаточным), фокус на стратегических решениях а не операционных деталях, чёткость рекомендаций с финансовым обоснованием, минимум текста и максимум данных.`
 };
 
 // ─── LANG TOGGLE ─────────────────────────────────────────────
@@ -677,19 +709,14 @@ function onFileChange(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
 
 function setFile(f) {
   if (f.size > 52428800) { showError('Файл слишком большой. Максимум 50 МБ.'); return; }
-  if (!f.name.match(/\.(pptx|pdf)$/i)) { showError('Поддерживаются только .pptx и .pdf файлы.'); return; }
+  if (!f.name.match(/\.pdf$/i)) { showError('Поддерживаются только PDF-файлы. Конвертируйте PPTX в PDF через Файл → Сохранить как → PDF.'); return; }
   currentFile = f;
   document.getElementById('fileName').textContent = f.name;
   document.getElementById('fileSize').textContent = (f.size / 1024 / 1024).toFixed(1) + ' МБ';
   document.getElementById('fileChosen').classList.add('visible');
   uploadZone.classList.add('has-file');
   hideError();
-  if (f.name.toLowerCase().endsWith('.pptx')) {
-    showError('⚠️ PPTX-файлы нельзя проанализировать напрямую. Конвертируйте в PDF: в PowerPoint нажмите Файл → Сохранить как → PDF, затем загрузите PDF-версию.');
-    document.getElementById('analyzeBtn').disabled = true;
-  } else {
-    document.getElementById('analyzeBtn').disabled = false;
-  }
+  document.getElementById('analyzeBtn').disabled = false;
 }
 
 function removeFile(e) {
@@ -745,8 +772,8 @@ async function runAnalysis() {
   try {
     const isPDF  = currentFile.name.toLowerCase().endsWith('.pdf');
     const langNote = reportLang === 'ru'
-      ? 'Пиши отчёт на русском языке.'
-      : 'Write the report in English.';
+      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском.'
+      : 'Write the entire report in English. All JSON fields (title, summary, label, detail, etc.) must be in English.';
 
     const base64 = await fileToBase64(currentFile);
 
@@ -814,24 +841,71 @@ ${goalContext}
   "priorityActions": ["<действие 1>", "<действие 2>", "<действие 3>"]
 }
 
-По каждой категории оценивай по СЛЕДУЮЩИМ критериям:
+По каждой категории оценивай по СЛЕДУЮЩИМ критериям (50+ параметров):
 
-СТРУКТУРА: пирамидный принцип (вывод вперёд), MECE (взаимоисключающие/полные разделы), SCR (ситуация-осложнение-решение), storyline читается по заголовкам, наличие Appendix, соответствие Agenda реальной структуре.
+СТРУКТУРА И ПОНЯТНОСТЬ:
+- Пирамидный принцип: главный вывод/рекомендация вынесен в начало, читатель не должен листать до конца чтобы понять суть
+- Цель презентации чётко сформулирована и достигается
+- Есть короткое структурированное Executive Summary которое точно отражает цель
+- MECE: разделы взаимоисключающие и полностью покрывают тему
+- SCR: есть ситуация (контекст) → осложнение (проблема) → решение
+- Storyline: можно прочитать только заголовки и понять всю историю
+- Каждый слайд содержит ровно одно сообщение (one message per slide)
+- Если слайд нельзя описать двухстрочным заголовком — его надо разбить
+- Содержимое каждого слайда полностью поддерживает его заголовок, нет лишнего контента
 
-ЗАГОЛОВКИ: каждый заголовок — инсайт/вывод (не тема), заголовки самодостаточны (история читается только по ним), нет заголовков-существительных без вывода, длина ≤2 строк, один слайд — одна идея.
+ЗАГОЛОВКИ (ACTION TITLES):
+- Каждый заголовок — инсайт/вывод, а не описательная тема ("Выручка выросла на 23%" vs "Динамика выручки")
+- Заголовок отвечает на вопрос "So what?" — что читатель должен вынести из этого слайда
+- История читается только по заголовкам без просмотра содержимого
+- Нет заголовков-существительных без глагола и без вывода
+- Длина заголовка ≤ 2 строк
+- Заголовок направляет читателя и помогает сфокусироваться на главном
 
-EXECUTIVE SUMMARY: присутствует в первых 2-3 слайдах, содержит проблему + выводы + рекомендацию + next steps, достаточен для принятия решения без чтения остального.
+EXECUTIVE SUMMARY:
+- Присутствует в первых 2-3 слайдах
+- Содержит: проблему, ключевые выводы, рекомендацию, next steps
+- Достаточен для принятия решения без чтения остального документа
+- Не повторяет дословно текст из основной части
 
-ДИЗАЙН: ≤2 шрифта, иерархия размеров, ≤3 цвета + нейтральный, акцентный цвет только для инсайтов, нет градиентов/теней/3D, выравнивание по сетке, единые отступы, нумерация слайдов, источники данных, логотип.
+ОФОРМЛЕНИЕ И ЕДИНООБРАЗИЕ:
+- Все мелкие секционные заголовки (верхний левый угол) корректны и выровнены по разделам
+- Нумерация страниц присутствует и единообразна на всех слайдах
+- Один тип шрифта на протяжении всей презентации
+- Размер шрифта последователен: не более двух размеров в контентной зоне слайда, разница между ними 2pt (например, 16pt для секций и 14pt для текста)
+- Цвета последовательны на протяжении всей презентации
+- Все текстовые блоки, графики, подзаголовки выровнены и центрированы
+- Нет двойных пробелов и странного форматирования текста
+- Нет орфографических и грамматических ошибок
+- Есть финальный слайд (цветной слайд с логотипом, именами или слоганом компании)
+- Корректно выглядит в формате PDF
 
-ГРАФИКИ: тип соответствует данным, оси подписаны с единицами, нет 3D-диаграмм, legenda интегрирована, ключевая цифра выделена callout-ом, double axis только при необходимости.
+ЭСТЕТИКА И ВИЗУАЛЬНЫЕ АКЦЕНТЫ:
+- Ключевые данные и выводы визуально выделены (рамки, цвет, callout)
+- Цвет используется осмысленно: акцентный цвет только для главного инсайта
+- Визуальные элементы усиливают сообщение, а не отвлекают
+- Нет градиентов, теней, 3D-эффектов
+- Дизайн помогает читателю быстро понять что важно на каждом слайде
+- Иконки и иллюстрации уместны и последовательны по стилю
 
-ФИНАЛ: есть конкретный Next Steps / CTA, рекомендации содержат кто/что/когда/результат, Appendix пронумерован отдельно.`;
+ГРАФИКИ И ДАННЫЕ:
+- Каждый график/точка данных имеет источник
+- Все оси графиков подписаны
+- Тип графика соответствует данным (bar для сравнения, line для тренда, waterfall для декомпозиции)
+- Ключевой вывод выделен callout-ом прямо на графике
+- Легенда встроена в график, а не вынесена отдельно
+- Нет 3D-диаграмм и двойных осей без явной необходимости
+- Цвет на графиках используется для подчёркивания главного сообщения
+
+ФИНАЛ И NEXT STEPS:
+- Есть конкретный слайд с Next Steps или Call to Action
+- Рекомендации содержат: кто / что / когда / ожидаемый результат
+- Appendix структурирован и пронумерован отдельно (A-1, A-2...)`;
 
     const userContent = isPDF
       ? [
           { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
-          { type: 'text', text: `Проанализируй эту презентацию по всем критериям McKinsey${goalText ? '. Цель презентации: ' + goalText : ''}. Верни только JSON.` }
+          { type: 'text', text: `Проанализируй эту презентацию по стандартам топ-консалтинга (MBB)${goalText ? '. Цель презентации: ' + goalText : ''}. Верни только JSON без markdown и пояснений.` }
         ]
       : [
           { type: 'text', text: `Это содержимое PPTX-файла "${currentFile.name}". К сожалению, PPTX напрямую не поддерживается как документ, поэтому проведи анализ на основе имеющейся информации о типичной структуре подобных файлов. Верни JSON с оценкой по всем категориям, отметив что файл нужно конвертировать в PDF для точного анализа.` }
@@ -979,6 +1053,32 @@ function renderReport(report, filename) {
 
   document.getElementById('reportSection').style.display = 'block';
   document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Build dynamic summary banner
+  const bannerWrap = document.getElementById('summaryBannerWrap');
+  const bannerText = document.getElementById('summaryBannerText');
+  if (report.summary && bannerText) {
+    const scoreNum = Math.round(report.totalScore);
+    const weakCats = report.categories
+      .filter(c => c.score < 65)
+      .sort((a,b) => a.score - b.score)
+      .slice(0, 3)
+      .map(c => c.title.toLowerCase());
+    const strongCats = report.categories
+      .filter(c => c.score >= 75)
+      .sort((a,b) => b.score - a.score)
+      .slice(0, 2)
+      .map(c => c.title.toLowerCase());
+    let summaryLine = report.summary;
+    if (strongCats.length && weakCats.length) {
+      summaryLine += ` Сильные стороны: ${strongCats.join(', ')}. Главные зоны роста: ${weakCats.join(', ')} — поработайте над ними, и презентация выйдет на новый уровень.`;
+    } else if (weakCats.length) {
+      summaryLine += ` Сосредоточьтесь на: ${weakCats.join(', ')}.`;
+    }
+    bannerText.textContent = summaryLine;
+    bannerWrap.style.display = 'block';
+    bannerWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 // ─── ACCORDION ────────────────────────────────────────────────
@@ -1003,7 +1103,7 @@ function copyReport() {
 
 // ─── PLAIN TEXT ───────────────────────────────────────────────
 function buildPlainText(report) {
-  let t = `McKinsey Presentation Checker — Отчёт\n${'='.repeat(40)}\n\n`;
+  let t = `Consulting-Grade Presentation Checker — Отчёт\n${'='.repeat(40)}\n\n`;
   t += `Итоговый балл: ${report.totalScore}/100\n\n`;
   t += `${report.summary}\n\n`;
   if (report.topStrengths?.length) t += `Сильные стороны:\n${report.topStrengths.map(s => '• ' + s).join('\n')}\n\n`;
