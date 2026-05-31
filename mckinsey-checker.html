@@ -531,7 +531,7 @@
   </div>
   <button class="btn-upload" onclick="document.getElementById('fileInput').click()">Выбрать файл</button>
   <input type="file" id="fileInput" accept=".pdf" onchange="onFileChange(event)">
-  <p class="upload-formats">Файл в формате PDF · максимум 50 МБ</p>
+  <p class="upload-formats">Файл в формате PDF · максимум 20 МБ</p>
 </div>
 
 <div class="error-msg" id="errorMsg"></div>
@@ -591,7 +591,7 @@
 <section class="how-section">
   <p class="section-eyebrow">Как это работает</p>
   <div class="steps-row">
-    <div class="step-card"><div class="step-num">1</div><h4>Загрузите файл</h4><p>PDF-файл, до 50 МБ</p></div>
+    <div class="step-card"><div class="step-num">1</div><h4>Загрузите файл</h4><p>PDF-файл, до 20 МБ</p></div>
     <div class="step-card"><div class="step-num">2</div><h4>AI анализирует</h4><p>Claude читает каждый слайд по 50+ критериям</p></div>
     <div class="step-card"><div class="step-num">3</div><h4>Получите отчёт</h4><p>Баллы и конкретные комментарии</p></div>
     <div class="step-card"><div class="step-num">4</div><h4>Скачайте PDF</h4><p>Готовый разбор для команды</p></div>
@@ -708,7 +708,7 @@ uploadZone.addEventListener('drop', e => {
 function onFileChange(e) { if (e.target.files[0]) setFile(e.target.files[0]); }
 
 function setFile(f) {
-  if (f.size > 52428800) { showError('Файл слишком большой. Максимум 50 МБ.'); return; }
+  if (f.size > 20971520) { showError('Файл слишком большой. Максимум 50 МБ.'); return; }
   if (!f.name.match(/\.pdf$/i)) { showError('Поддерживаются только PDF-файлы. Конвертируйте PPTX в PDF через Файл → Сохранить как → PDF.'); return; }
   currentFile = f;
   document.getElementById('fileName').textContent = f.name;
@@ -772,7 +772,7 @@ async function runAnalysis() {
   try {
     const isPDF  = currentFile.name.toLowerCase().endsWith('.pdf');
     const langNote = reportLang === 'ru'
-      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно: избегай кальки с английского, не используй слова-паразиты вроде «данный», «является», «осуществляет». Пиши живым русским языком — как опытный редактор. Пиши конкретно и по делу, без воды. При перечислении проблем и сильных сторон используй запятые, не точки с запятой, и пиши все пункты со строчной буквы (не с заглавной).'
+      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно, живым русским языком. СТРОГИЕ ПРАВИЛА ПУНКТУАЦИИ И СТИЛЯ: 1) НИКОГДА не используй точку с запятой (;) для перечисления — только запятую; 2) после запятой пиши со строчной буквы, не с заглавной; 3) не упоминай McKinsey, BCG, Bain по названию в отчёте — пиши «консалтинговый стандарт» или «best practice»; 4) вместо «пирамидный принцип» пиши только «принцип пирамиды»; 5) избегай кальки с английского; 6) пиши конкретно и по делу, без воды.'
       : 'Write the entire report in English. All JSON fields (title, summary, label, detail, etc.) must be in English.';
 
     const base64 = await fileToBase64(currentFile);
@@ -790,7 +790,7 @@ async function runAnalysis() {
 - ОПЕРАЦИОННЫЕ СЛАЙДЫ / ДАШБОРД — регулярные отчёты, метрики, KPI: оценивай прежде всего ясность данных, выводы в заголовках, последовательность оформления; не требуй SCR и полного нарратива
 - ПИТЧ / ПРОДАЖА — продукт, идея, инвестиции: акцент на ясности ценностного предложения, убедительности, CTA
 
-Адаптируй требования к типу: не ставь низкий балл за отсутствие Executive Summary в операционном дашборде. Оценивай каждый тип по его собственным best practices.
+Адаптируй требования к типу: не ставь низкий балл за отсутствие Executive Summary в операционном дашборде. Оценивай каждый тип по его собственным best practices. ВАЖНО: никогда не упоминай McKinsey, BCG, Bain по названию в тексте отчёта — пиши «консалтинговый стандарт» или «лучшие практики».
 
 Твой стиль обратной связи: сначала признай что сделано хорошо, затем покажи зоны роста как возможности ("добавьте X — и станет значительно сильнее"), используй язык "почти у цели", "один шаг до отличного результата". Будь конкретен и практичен. ${langNote}
 
