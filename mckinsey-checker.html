@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consulting-Grade Presentation Checker · Ksenia Denisova</title>
+<title>Consulting Slide Checker · Ksenia Denisova</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -682,7 +682,7 @@ function getGoalText() {
 
 const goalPromptAdditions = {
   new_audience: `ЦЕЛЬ — Представить продукт новой аудитории: проверяй наличие контекста (кто мы, какую проблему решаем), ясность ценностного предложения, понятность для людей вне индустрии, наличие конкретного CTA в конце.`,
-  internal_sell: `ЦЕЛЬ — Продать идею внутри организации: проверяй WIIFM (what's in it for me для каждого стейкхолдера), наличие слайда с рисками и митигацией, конкретность next steps с ответственными и сроками. Пирамидный принцип особенно важен.`,
+  internal_sell: `ЦЕЛЬ — Продать идею внутри организации: проверяй WIIFM (what's in it for me для каждого стейкхолдера), наличие слайда с рисками и митигацией, конкретность next steps с ответственными и сроками. Принцип пирамиды особенно важен.`,
   prove_project: `ЦЕЛЬ — Обосновать необходимость инвестиций: проверяй обоснование проблемы данными, ROI и бизнес-кейс, сравнение "сделать vs не сделать", чёткость запрашиваемых ресурсов и сроков.`,
   monthly_report: `ЦЕЛЬ — Отчёт о деятельности: проверяй динамику показателей (MoM/YoY), наличие выводов из данных (не просто цифры), объяснение отклонений от плана, конкретность планов на следующий период. Каждый график должен иметь callout с ключевым инсайтом.`,
   board: `ЦЕЛЬ — Управляющий комитет / BoD: проверяй Executive Summary (должен быть самодостаточным), фокус на стратегических решениях а не операционных деталях, чёткость рекомендаций с финансовым обоснованием, минимум текста и максимум данных.`
@@ -772,7 +772,7 @@ async function runAnalysis() {
   try {
     const isPDF  = currentFile.name.toLowerCase().endsWith('.pdf');
     const langNote = reportLang === 'ru'
-      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно: избегай кальки с английского, не используй слова-паразиты вроде «данный», «является», «осуществляет». Пиши живым русским языком — как опытный редактор. Пиши конкретно и по делу, без воды.'
+      ? 'Пиши весь отчёт строго на русском языке. Все поля JSON (title, summary, label, detail и т.д.) — на русском. Пиши грамотно и естественно: избегай кальки с английского, не используй слова-паразиты вроде «данный», «является», «осуществляет». Пиши живым русским языком — как опытный редактор. Пиши конкретно и по делу, без воды. При перечислении проблем и сильных сторон используй запятые, не точки с запятой, и пиши все пункты со строчной буквы (не с заглавной).'
       : 'Write the entire report in English. All JSON fields (title, summary, label, detail, etc.) must be in English.';
 
     const base64 = await fileToBase64(currentFile);
@@ -782,7 +782,17 @@ async function runAnalysis() {
       ? goalPromptAdditions[selectedGoal]
       : goalText ? `ЦЕЛЬ презентации: ${goalText}. Оценивай все критерии с учётом этой цели.` : '';
 
-    const systemPrompt = `Ты — внимательный и вдохновляющий ментор по презентациям с опытом McKinsey. Ты искренне веришь в потенциал каждого автора и даёшь обратную связь так, чтобы человек почувствовал поддержку и захотел улучшить работу — а не расстроился. Твой стиль: сначала признай усилия и что уже сделано хорошо, затем покажи зоны роста как возможности ("добавьте X — и презентация станет значительно сильнее"), используй язык "почти у цели", "один шаг до отличного результата", "это легко исправить". Будь конкретен и практичен. ${langNote}
+    const systemPrompt = `Ты — внимательный и вдохновляющий ментор по презентациям с опытом MBB-консалтинга. Ты искренне веришь в потенциал каждого автора и даёшь обратную связь так, чтобы человек почувствовал поддержку и захотел улучшить работу — а не расстроился.
+
+ВАЖНО: Сначала определи тип презентации по содержимому:
+- СТРАТЕГИЧЕСКАЯ / КЛИЕНТСКАЯ — рекомендации, стратегия, бизнес-кейс: применяй полные стандарты MBB (принцип пирамиды, SCR, Executive Summary обязательны)
+- АНАЛИТИЧЕСКИЙ ОТЧЁТ / RESEARCH — данные, исследования, инсайты (как McKinsey Global Institute): акцент на качестве данных, визуализации, action titles; Executive Summary желателен но не обязателен
+- ОПЕРАЦИОННЫЕ СЛАЙДЫ / ДАШБОРД — регулярные отчёты, метрики, KPI: оценивай прежде всего ясность данных, выводы в заголовках, последовательность оформления; не требуй SCR и полного нарратива
+- ПИТЧ / ПРОДАЖА — продукт, идея, инвестиции: акцент на ясности ценностного предложения, убедительности, CTA
+
+Адаптируй требования к типу: не ставь низкий балл за отсутствие Executive Summary в операционном дашборде. Оценивай каждый тип по его собственным best practices.
+
+Твой стиль обратной связи: сначала признай что сделано хорошо, затем покажи зоны роста как возможности ("добавьте X — и станет значительно сильнее"), используй язык "почти у цели", "один шаг до отличного результата". Будь конкретен и практичен. ${langNote}
 
 ${goalContext}
 
@@ -844,7 +854,7 @@ ${goalContext}
 По каждой категории оценивай по СЛЕДУЮЩИМ критериям (50+ параметров):
 
 СТРУКТУРА И ПОНЯТНОСТЬ:
-- Пирамидный принцип: главный вывод/рекомендация вынесен в начало, читатель не должен листать до конца чтобы понять суть
+- Принцип пирамиды: главный вывод/рекомендация вынесен в начало, читатель не должен листать до конца чтобы понять суть
 - Цель презентации чётко сформулирована и достигается
 - Есть короткое структурированное Executive Summary которое точно отражает цель
 - MECE: разделы взаимоисключающие и полностью покрывают тему
@@ -1103,7 +1113,7 @@ function copyReport() {
 
 // ─── PLAIN TEXT ───────────────────────────────────────────────
 function buildPlainText(report) {
-  let t = `Consulting-Grade Presentation Checker — Отчёт\n${'='.repeat(40)}\n\n`;
+  let t = `Consulting Slide Checker — Отчёт\n${'='.repeat(40)}\n\n`;
   t += `Итоговый балл: ${report.totalScore}/100\n\n`;
   t += `${report.summary}\n\n`;
   if (report.topStrengths?.length) t += `Сильные стороны:\n${report.topStrengths.map(s => '• ' + s).join('\n')}\n\n`;
@@ -1124,7 +1134,7 @@ function buildPlainText(report) {
 function downloadReport() {
   const win = window.open('', '_blank');
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
-    <title>McKinsey Checker Report</title>
+    <title>Consulting Slide Checker Report</title>
     <style>
       body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 24px; color: #2a1f1a; line-height: 1.7; }
       h1 { font-size: 28px; color: #c4897a; margin-bottom: 8px; }
@@ -1169,7 +1179,7 @@ function downloadReport() {
   @media (max-width: 640px) { .goal-grid { grid-template-columns: repeat(2, 1fr); } }
 
 </style></head><body>
-    <h1>McKinsey Presentation Checker</h1>
+    <h1>Consulting Slide Checker</h1>
     <p class="meta">Отчёт сгенерирован · ${new Date().toLocaleDateString('ru-RU')} · kseniadenisova.com</p>
     <pre style="white-space:pre-wrap;font-family:Georgia,serif;font-size:14px">${lastReportText.replace(/</g,'&lt;')}</pre>
     <script>window.onload=()=>window.print()<\/script>
